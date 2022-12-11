@@ -4,25 +4,27 @@ const userModel = require('../models/user.model')
 const FeedbackCtrl = {
     create: async (req, res) => {
         try {
-            const { content, userId } = req.body
+            const { content, userId = "", name = "" } = req.body
 
-        if(!content || !userId) {
+        if(!content) {
             return res.status(400).json({ success: false, message: 'Missing params' })
         }
-
-        const existingUser = await userModel.findOne({ _id: userId })
-
-        if(!existingUser) {
-            return res.status(404).json({ success: false, message: "Not found user!" })
+        if(userId) {
+            const existingUser = await userModel.findOne({ _id: userId })
+            
+            if(!existingUser) {
+                return res.status(404).json({ success: false, message: "Not found user!" })
+            }
         }
 
-        const feedback = new feedbackModel({ content, userId })
+        const feedback = new feedbackModel({ content, userId, name })
 
         await feedback.save()
 
         return res.json({
             success: true,
-            message: "Create feedback successfully!"
+            message: "Create feedback successfully!",
+            feedback
         })
         } catch (error) {
             console.log(error)

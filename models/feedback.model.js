@@ -3,14 +3,15 @@ const Schema = mongoose.Schema;
 
 const FeedbackSchema = new Schema(
   {
+    name: {
+        type: String
+    },
     content: {
         type: String,
         required: true
     },
     userId: {
-        type: mongoose.Types.ObjectId,
-        ref: 'user',
-        required: true
+        type: String,
     }
   },
   {
