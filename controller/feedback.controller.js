@@ -44,7 +44,7 @@ const FeedbackCtrl = {
 
     getAll: async (req, res) => {
         try {
-            const feedbacks = await feedbackModel.find().sort({ 'createdAt': 1 }).populate('userId')
+            const feedbacks = await feedbackModel.find().sort({ 'createdAt': -1 }).populate('userId')
 
             return res.json({ success: true, message: "Get feedbacks successfully!", feedbacks })
         } catch (error) {
