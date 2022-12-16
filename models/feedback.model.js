@@ -12,7 +12,8 @@ const FeedbackSchema = new Schema(
     },
     userId: {
         type: mongoose.Types.ObjectId,
-        ref: 'users'
+        ref: 'users',
+        default: null
     }
   },
   {

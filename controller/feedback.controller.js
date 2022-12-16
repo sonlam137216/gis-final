@@ -15,17 +15,27 @@ const FeedbackCtrl = {
             if(!existingUser) {
                 return res.status(404).json({ success: false, message: "Not found user!" })
             }
+            const feedback = new feedbackModel({ content, userId, name })
+    
+            await feedback.save()
+    
+            return res.json({
+                success: true,
+                message: "Create feedback successfully!",
+                feedback
+            })
+        } else {
+            const feedback = new feedbackModel({ content, name })
+    
+            await feedback.save()
+    
+            return res.json({
+                success: true,
+                message: "Create feedback successfully!",
+                feedback
+            })
         }
 
-        const feedback = new feedbackModel({ content, userId, name })
-
-        await feedback.save()
-
-        return res.json({
-            success: true,
-            message: "Create feedback successfully!",
-            feedback
-        })
         } catch (error) {
             console.log(error)
             res.status(500).json({ success: false, message: "Internal server error!" })
@@ -34,7 +44,7 @@ const FeedbackCtrl = {
 
     getAll: async (req, res) => {
         try {
-            const feedbacks = await feedbackModel.find().populate('userId')
+            const feedbacks = await feedbackModel.find().sort({ 'createdAt': 1 }).populate('userId')
 
             return res.json({ success: true, message: "Get feedbacks successfully!", feedbacks })
         } catch (error) {
