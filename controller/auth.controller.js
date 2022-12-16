@@ -31,7 +31,7 @@ const authCtrl = {
       if (password !== confirmPassword)
         return res
           .status(400)
-          .json({ success: false, message: "Password does not match" });
+          .json({ success: false, message: "Password does not match! Login failed!" });
 
       // all good
       const hashedPassword = await bcrypt.hash(password, 12);
@@ -50,7 +50,7 @@ const authCtrl = {
 
       return res.json({
         success: true,
-        message: "user created successfully!",
+        message: "Register successfully!",
         userInfo,
         accessToken,
       });
@@ -82,20 +82,20 @@ const authCtrl = {
       if (!user)
         return res
           .status(400)
-          .json({ success: false, message: "Incorrect email" });
+          .json({ success: false, message: "User not found! Login failed!" });
 
       const passwordValid = await bcrypt.compare(password, user.password);
 
       if (!passwordValid)
         return res
           .status(400)
-          .json({ success: false, message: "Incorrect  password" });
+          .json({ success: false, message: "Incorrect password!, Login failed!" });
 
       const { accessToken } = generateTokens(user);
 
       return res.json({
         success: true,
-        message: "User logged in successfully",
+        message: "Log in successfully!",
         userInfo: user,
         accessToken,
       });
@@ -103,7 +103,7 @@ const authCtrl = {
       console.log(error);
       return res
         .status(500)
-        .json({ success: false, message: "Interal server error" });
+        .json({ success: false, message: "Internal server error" });
     }
   },
 
