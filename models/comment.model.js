@@ -12,7 +12,8 @@ const CommentSchema = new Schema(
     },
     userId: {
         type: mongoose.Types.ObjectId,
-        ref: 'users'
+        ref: 'users',
+        default: null
     }
   },
   {

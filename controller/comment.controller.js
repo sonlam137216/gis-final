@@ -4,6 +4,7 @@ const userModel = require('../models/user.model')
 const CommentCtrl = {
     create: async (req, res) => {
         try {
+            let comment = {}
             const { content, userId = "", name = "" } = req.body
 
         if(!content) {
@@ -15,17 +16,27 @@ const CommentCtrl = {
             if(!existingUser) {
                 return res.status(404).json({ success: false, message: "Not found user!" })
             }
+            comment = new commentModel({ content, userId, name })
+
+            await comment.save()
+    
+            return res.json({
+                success: true,
+                message: "Create comment successfully!",
+                comment
+            })
+        } else {
+            comment = new commentModel({ content, name })
+
+            await comment.save()
+    
+            return res.json({
+                success: true,
+                message: "Create comment successfully!",
+                comment
+            })
         }
 
-        const comment = new commentModel({ content, userId, name })
-
-        await comment.save()
-
-        return res.json({
-            success: true,
-            message: "Create comment successfully!",
-            comment
-        })
         } catch (error) {
             console.log(error)
             res.status(500).json({ success: false, message: "Internal server error!" })
