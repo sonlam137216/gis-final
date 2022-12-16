@@ -1,4 +1,4 @@
-const feedbackModel = require('../models/feedback.model')
+const commentModel = require('../models/comment.model')
 const userModel = require('../models/user.model')
 
 const CommentCtrl = {
@@ -17,14 +17,14 @@ const CommentCtrl = {
             }
         }
 
-        const feedback = new feedbackModel({ content, userId, name })
+        const comment = new commentModel({ content, userId, name })
 
-        await feedback.save()
+        await comment.save()
 
         return res.json({
             success: true,
             message: "Create comment successfully!",
-            feedback
+            comment
         })
         } catch (error) {
             console.log(error)
@@ -34,9 +34,9 @@ const CommentCtrl = {
 
     getAll: async (req, res) => {
         try {
-            const feedbacks = await feedbackModel.find().populate('userId')
+            const comments = await commentModel.find().populate('userId')
 
-            return res.json({ success: true, message: "Get comments successfully!", feedbacks })
+            return res.json({ success: true, message: "Get comments successfully!", comments })
         } catch (error) {
             console.log(error)
             res.status(500).json({ success: false, message: "Internal server error!" })
